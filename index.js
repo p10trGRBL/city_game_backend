@@ -1,20 +1,22 @@
-import express from "express";
-import cors from "cors";
-import { ErrorHanlder } from "./middleware/ErrorHandler.js";
-import cityRoutes from "./routes/cityRoutes.js";
-import "./db/server.js";
+const express = require("express");
+const cors = require("cors");
+const ErrorHanlder = require("./middleware/ErrorHandler.js");
+const app = express();
+require("dotenv").config();
+const users = require("./routes/userRoutes.js");
+const cityRoutes = require("./routes/cityRoutes.js");
 
-const users = require("./routes/User");
+const connectDB = require("./db/server.js");
+connectDB();
 
 app.use(express.urlencoded({ extended: true }));
 
-const app = express();
 const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(cors());
-app.use(ErrorHanlder);
 
 app.use("/leaderboard/users", users);
 
+// app.use("/", ErrorHanlder);
 app.listen(PORT, () => console.log(`Server is listening to ${PORT}`));
