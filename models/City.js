@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const citySchema = new mongoose.Schema({
     url: {
@@ -22,4 +22,4 @@ const citySchema = new mongoose.Schema({
     },
 });
 
-export default mongoose.model('City', citySchema);
+module.exports = mongoose.model('City', citySchema);
