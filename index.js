@@ -1,22 +1,28 @@
-import express from 'express';
-import cors from 'cors';
-import cityRouter from './routes/cityRoutes.js';
-import { ErrorHandler } from './middleware/ErrorHandler.js';
-import './db/server.js'
 
+const express = require("express");
+const cors = require("cors");
+const ErrorHanlder = require("./middleware/ErrorHandler.js");
 
 const app = express();
-const PORT = process.env.PORT ||8000;
+require("dotenv").config();
+const users = require("./routes/userRoutes.js");
+const cityRoutes = require("./routes/cityRoutes.js");
+
+const connectDB = require("./db/server.js");
+connectDB();
+
+app.use(express.urlencoded({ extended: true }));
+
+const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(cors());
 
-app.use('/', cors(), cityRouter);
+app.use('/game', cityRouter);
 
 
 
-app.use(ErrorHandler);
+app.use("/leaderboard/users", users);
 
-app.listen(PORT, ()=>console.log(`Server is listening to ${PORT}`))
-
-
+// app.use("/", ErrorHanlder);
+app.listen(PORT, () => console.log(`Server is listening to ${PORT}`));
